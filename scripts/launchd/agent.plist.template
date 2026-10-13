@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- scripts/install_launchd.sh が __LABEL__ と __ROOT__ を埋めて ~/Library/LaunchAgents に置く。秘密情報は書かない -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>__LABEL__</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__ROOT__/.venv/bin/python</string>
+        <string>__ROOT__/app.py</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>__ROOT__</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- launchd の既定 PATH には Homebrew が入らないので足す（node・claude CLI 用） -->
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+    <key>StandardOutPath</key>
+    <string>__ROOT__/logs/agent.log</string>
+    <key>StandardErrorPath</key>
+    <string>__ROOT__/logs/agent.log</string>
+</dict>
+</plist>

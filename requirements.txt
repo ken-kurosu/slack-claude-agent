@@ -1,0 +1,32 @@
+# 版は、Python 3.11 で動作確認済みのものに固定している。上げる時はテストを回してから
+# Python は 3.11 を推奨（uv python install 3.11 → uv venv --python 3.11 .venv）
+
+# Slack
+slack_bolt==1.28.0
+slack_sdk==3.41.0
+aiohttp==3.13.5
+python-dotenv==1.2.2
+
+# Claude（Claude Code CLI を使う。API キーは使わない。anthropic は型・互換用）
+claude-agent-sdk==0.1.68
+anthropic==0.97.0
+pexpect==4.9.0           # Claude Code の対話画面を裏で操作する（PTY エンジン）
+
+# MCP サーバー（エージェント固有ツール）。2 系は作りが変わるので 1 系に固定
+mcp==1.27.0
+
+# 添付ファイルの読み取り・PDF編集
+PyMuPDF==1.27.2.3        # import fitz
+pypdf==6.12.2
+python-docx==1.2.0
+python-pptx==1.0.2
+openpyxl==3.1.5
+
+# その他
+PyYAML==6.0.3            # 能力マップ（config/capabilities.yaml）
+jpholiday==1.0.3         # 営業日の判定
+duckduckgo_search==8.1.1 # 簡易 Web 検索（tools/text_tools.py）
+
+# 開発・検査
+pytest
+pyflakes

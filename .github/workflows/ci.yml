@@ -1,0 +1,31 @@
+name: ci
+# push と PR のたびに、秘密情報の検査とテストを回す（リポジトリを移しても、そのまま動く）
+on:
+  push:
+  pull_request:
+
+jobs:
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: secret scan (built-in)
+        run: python3 scripts/check_secrets.py
+      - name: secret scan (gitleaks, full history)
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.18.4 detect --source=/repo --redact --no-banner
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -m pyflakes app.py config handlers mcp_agent_tools scripts tools utils | (grep -v -E "imported but unused|is assigned to but never used|f-string is missing placeholders|redefinition of unused|nonlocal" || true) | tee pyflakes.txt && test ! -s pyflakes.txt
+      - run: python -m pytest -q tests
+        env:
+          # 混ぜてはいけない語（カンマ区切り）。リポジトリの Secrets に置く。無ければその検査だけ飛ばす
+          FORBIDDEN_WORDS: ${{ secrets.FORBIDDEN_WORDS }}

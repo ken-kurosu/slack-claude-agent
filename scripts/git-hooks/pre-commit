@@ -1,0 +1,11 @@
+#!/bin/bash
+# コミット前に秘密情報の混入を検査する。有効にする: git config core.hooksPath scripts/git-hooks
+set -e
+cd "$(git rev-parse --show-toplevel)"
+PY=python3
+[ -x .venv/bin/python ] && PY=.venv/bin/python
+"$PY" scripts/check_secrets.py --staged
+# gitleaks が入っていれば、より広いパターンでも検査する
+if command -v gitleaks >/dev/null 2>&1; then
+    gitleaks protect --staged --redact --no-banner
+fi

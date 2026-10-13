@@ -1,0 +1,25 @@
+# エージェントの能力マップ
+# 「できない/条件付き」能力の単一ソース。応答時の正直さ（できない＋代替案）の根拠になる。
+# - can: false   = できない（必ず alternative を提示する）
+# - can: partial = 条件付きでできる（condition を明示する）
+# 業務の連携を足したら、ここも更新する（誤登録は能力の自己毀損になるので、管理者の確認を経て）
+
+- id: external_login
+  can: false
+  claim: "外部サービスへのログイン操作（ID/パスワード入力）"
+  alternative: "操作手順を具体的にガイドする"
+
+- id: read_secrets
+  can: false
+  claim: "トークン・パスワード・認証情報の読み出しや表示"
+  alternative: "設定の手順を案内し、値は管理者に入れてもらう"
+
+- id: realtime_data
+  can: partial
+  claim: "リアルタイム実データの取得"
+  condition: "接続済みのツール経由で取得できるもののみ。それ以外は必ず「推定です」と明記する"
+
+- id: file_send_external
+  can: false
+  claim: "社外への直接のメール送信・外部投稿の無承認実行"
+  alternative: "下書き・文案を作成して承認を得てから送る（承認フロー必須）"

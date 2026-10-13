@@ -1,0 +1,55 @@
+# Slack アプリの設定見本（https://api.slack.com/apps → Create New App → From an app manifest に貼る）
+# 名前は仮。エージェントの名前が決まったら display_information.name と bot_user.display_name を変える
+display_information:
+  name: Agent
+  description: 社内AIアシスタント（試作）
+features:
+  app_home:
+    home_tab_enabled: true
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: false
+  bot_user:
+    display_name: Agent
+    always_online: true
+  slash_commands:
+    - command: /agent-clear
+      description: このスレッドの会話の記憶をリセット
+      should_escape: false
+    - command: /agent-help
+      description: 使い方を表示
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - app_mentions:read      # メンションを受け取る
+      - chat:write             # 返信・ボタン付きメッセージ・更新・削除
+      - im:history             # DM を読む
+      - im:read
+      - im:write               # DM を開く（send_dm）
+      - channels:history       # 参加中の公開チャンネルのスレッドを読む
+      - channels:read
+      - groups:history         # 参加中の非公開チャンネルのスレッドを読む
+      - groups:read
+      - mpim:history
+      - reactions:read
+      - reactions:write        # 受付・処理中・完了の絵文字
+      - users:read             # 発話者の名前
+      - files:read             # 添付ファイルを読む
+      - files:write            # 成果物の添付
+      - canvases:write         # save_to_canvas
+      - commands
+settings:
+  event_subscriptions:
+    bot_events:
+      - app_home_opened
+      - app_mention
+      - message.im
+      - message.channels
+      - message.groups
+      - reaction_added
+      - file_shared
+  interactivity:
+    is_enabled: true
+  org_deploy_enabled: false
+  socket_mode_enabled: true    # 受信用の公開URLは不要（社内の Mac から外向きにつなぐ）
+  token_rotation_enabled: false

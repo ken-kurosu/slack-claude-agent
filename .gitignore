@@ -1,0 +1,31 @@
+# ── 秘密情報（絶対にコミットしない） ──
+.env
+.env.*
+!.env.example
+.mcp.json
+credentials/
+*.pem
+*.p12
+*.key
+service-account*.json
+
+# ── 実行時のデータ（会話の記憶・ログ・作業ファイル） ──
+memory_data/
+logs/
+*.log
+*.pid
+workspace/
+
+# ── Python ──
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ── OS・エディタ ──
+.DS_Store
+.idea/
+.vscode/
+
+# ── 手元だけの設定（公開しない） ──
+*.local.txt
